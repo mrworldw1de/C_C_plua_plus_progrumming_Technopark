@@ -2,6 +2,10 @@
 #define IZ_1_H
 #pragma once
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define ERROR_CALL 404
+#define GOOD 1
 
 //Структура аттрибута тега 
 typedef struct teg_attribute
@@ -23,10 +27,13 @@ typedef struct HTML_teg
 }HTML_teg;
 
 //функция получения строки из файла
-void del_symbol(char** string, int* len);
+void del_symbol(char** string, int** len);
 
-//получить строку из файла
+//получить строку из консоли
 char* get_string(int* len);
+
+//получить строку из Файла
+char* get_string_from_file(int* len, FILE* file);
 
 //функция устанавливает по введенной строке, открывающийся или закрывающийся html тег
 void set_open_or_close_teg(char** string, int* len, HTML_teg* teg);
@@ -35,20 +42,24 @@ void set_open_or_close_teg(char** string, int* len, HTML_teg* teg);
 char* devide_string(char** right_string, int* len, char mark);
 
 //функция удаляет пробелы в строке
-void del_gap(char** string, int* len);
+void del_gap(char** string, int** len);
 
 //функция вносит вырезает из строки String первое слово до пробела и указывает элементу структуры teg на него. Это имя тега
-void set_teg_name(char** string, int* len, HTML_teg* teg);
+int set_teg_name(char** string, int* len, HTML_teg* teg);
 
 //функция присваивает структуре тега значения аттрибутов тега
-void set_teg_attributes(char** string, int* len, HTML_teg* teg);
+int set_teg_attributes(char** string, int* len, HTML_teg* teg);
 
 //функция сообщает об ошибке и делает тег нулевым
 void call_eror(HTML_teg* teg);
 
 //функция последовательно вызывает чтение строки, присвоение параметров тега или вызывает срабатывание сообщения о неправильно введённых данных
-HTML_teg* read_HTML_teg();
+HTML_teg* read_HTML_teg(FILE* file);
 
+//чистим память указателя на тег
+void free_teg_mem(HTML_teg* teg);
 
+//чистим память аттрибута
+void free_atr_mem(teg_attribute* atribute);
 
 #endif
